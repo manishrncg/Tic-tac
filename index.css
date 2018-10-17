@@ -50,3 +50,10 @@
     border-radius: 5px;
     line-height: 100px;
 }
+
+/* css additions below*/
+
+.box:hover {
+    border: 1px solid #101010;
+    transition: all ease-in-out .25s;
+}
