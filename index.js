@@ -76,14 +76,15 @@
 	function onBoxClick(newValue) {
 		let computer = !isNaN(newValue);
 		let stopClick = false;
+		let rowIdx, colIdx;
 		if(computer){
-			var rowIdx = Math.round(Math.random()*2).toString();
-		    var colIdx = Math.round(Math.random()*2).toString();
+			rowIdx = Math.round(Math.random()*2).toString();
+		    colIdx = Math.round(Math.random()*2).toString();
 		    computer = false;
 		}
 		else{
-			var rowIdx = this.getAttribute("rowIdx");
-		    var colIdx = this.getAttribute("colIdx");
+			rowIdx = this.getAttribute("rowIdx");
+		    colIdx = this.getAttribute("colIdx");
 		    computer = true;
 		}
 		for(let i=0; i<positionTaken.length; i++){
@@ -111,8 +112,8 @@
 	}
 
 	function addClickHandlers() {
-	    var boxes = document.getElementsByClassName("box");
-	    for (var idx = 0; idx < boxes.length; idx++) {
+	    const boxes = document.getElementsByClassName("box");
+	    for (let idx = 0; idx < boxes.length; idx++) {
 	        boxes[idx].addEventListener('click', onBoxClick, false);
 	    }
 	}

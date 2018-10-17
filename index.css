@@ -17,7 +17,10 @@
 
 .columnsStyle {
     display: flex;
+    border: 1px solid #68f8fc;
+    border-radius: 2px;
     flex-direction: column;
+    box-shadow: 5px 10px 10px #888888;
 }
 
 .rowStyle {
