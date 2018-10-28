@@ -18,9 +18,9 @@
  * Use of Google is not encouraged
  * 
  */
-(function(){
+ (function(){
 	const grid = [];
-	const GRID_LENGTH = 3;
+	const GRID_LENGTH = 4;
 	let turn = 'X';
 	let positionTaken = [];
 
@@ -78,8 +78,8 @@
 		let stopClick = false;
 		let rowIdx, colIdx;
 		if(computer){
-			rowIdx = Math.round(Math.random()*2).toString();
-		    colIdx = Math.round(Math.random()*2).toString();
+			rowIdx = Math.round(Math.random() * (GRID_LENGTH-1)).toString(); // either 1 or 2
+		    colIdx = Math.round(Math.random() * (GRID_LENGTH-1)).toString(); // either 1 or 2
 		    computer = false;
 		}
 		else{
@@ -101,14 +101,15 @@
 		}
 	    positionTaken.push([rowIdx, colIdx]);    
 	    grid[colIdx][rowIdx] = !isNaN(newValue) ? newValue : 1;
-    	if(checkGameStatus()){
+	    let checkStatus = checkGameStatus();
+    	if(checkStatus){
     		renderMainGrid();
-    		alert(checkGameStatus() === 1 ? 'You won!' : 'Computer won!');
+    		alert(checkStatus === 1 ? 'You won!' : 'Computer won!');
     		return false;
     	}
 	    renderMainGrid();
 	    addClickHandlers();
-	    (isNaN(newValue)) && computersChance();
+	    isNaN(newValue) && computersChance();
 	}
 
 	function addClickHandlers() {
@@ -119,34 +120,81 @@
 	}
 
 	function computersChance(){
-		const randomValue = Math.round(Math.random())+1; // either 1 or 2
 		onBoxClick(2);
 	}
 
 	function checkGameStatus(){
 		let gameOver	= false;
-		let winner; 
-		for (let i=0; i<3; i++){
-			if(grid[i][0] && (grid[i][0] == grid[i][1]) && (grid[i][0] ==  grid[i][2])){
-				winner = grid[i][0];
-				break;
+		let winner;
+		let status = false;
+		for (let i=0; i<GRID_LENGTH; i++){
+			for(let j=0; j<GRID_LENGTH; j++){
+				if(grid[i][j] && (grid[i][0] == grid[i][j])){
+					status = true;
+					winner = grid[i][0];
+				}
+				else{
+					winner = 0;
+					status = false;
+					break;
+				}
+			}
+			if(status){
+				return winner;
 			}
 
-			if(grid[0][i] && (grid[0][i] == grid[1][i]) && (grid[0][i] == grid[2][i])){
-				winner = grid[0][i];
-				break;
+			for(let j=0; j<GRID_LENGTH; j++){
+				if(grid[0][i] == grid[j][i]){
+					status = true;
+					winner = grid[0][i];
+				}
+				else{
+					winner = 0;
+					status = false;
+					break;
+				}
+			}
+			if(status){
+				return winner;
+
 			}
 		}
-		if(grid[0][0] && (grid[0][0] == grid[1][1]) && (grid[0][0] == grid[2][2])){
-			winner = grid[0][0];
-		}
-		if(grid[0][2] && (grid[0][2] == grid[1][1]) && (grid[0][2] ==grid[2][0])){
-			winner = grid[0][2];
-		}
+			for(let j=0; j<GRID_LENGTH; j++){
+			 	if(grid[j][j] && (grid[j][j] == grid[0][0])){
+			 		status = true;
+			 		winner = grid[0][0];
+			 	}
+			 	else{
+			 		winner = 0;
+			 		status = false;
+			 		break;
+			 	}
+			}
+			if(status){
+				return winner;		
+			}
+
+		 	let decremental = GRID_LENGTH-1;
+			 for(let j=0; j<GRID_LENGTH; j++){
+			 	if(grid[j][decremental] && (grid[j][decremental] == grid[0][GRID_LENGTH-1])){
+			 		status = true;
+			 		winner = grid[0][GRID_LENGTH-1];
+			 		decremental--;
+			 	}
+			 	else{
+			 		winner = 0;
+			 		status = false;
+			 		decremental--;
+			 		break;
+			 	}
+			 }
+			 if(status){
+				return winner;	
+			}
 		return winner || false;
 	}
 
 	initializeGrid();
 	renderMainGrid();
 	addClickHandlers();
-})()
+ })()
